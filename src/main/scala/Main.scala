@@ -26,23 +26,22 @@ object StatusStreamer {
       .mapMaterializedValue(pushTweets)
 
     // Sinks
-    val print: Sink[Tweet, Future[Done]] = Sink.foreach[Tweet](println _)
+    val printTweet: Sink[Tweet, Future[Done]] = Sink.foreach[Tweet](println _)
 
     val printStr: Sink[String, Future[Done]] = Sink.foreach[String](println _)
 
     val countTweets: Sink[Int, Future[Int]] = Sink.fold[Int, Int](0)(_ + _)
 
     // Flows
-    val hateful = Fusing.aggressive(
+    val getNegativeTweets = Fusing.aggressive(
       Flow[Tweet]
-        .map(_.body.toLowerCase)
-        .filter(_.toLowerCase.contains("hate"))
+        .filter(_.body.toLowerCase.contains("hate"))
     )
 
     // Build graph (execution plan)
     val graph: RunnableGraph[Unit] = tweets
-      .via(hateful)
-      .to(printStr)
+      .via(getNegativeTweets)
+      .to(printTweet)
     //      .map(_ => 1)
     //      .toMat(countTweets)(Keep.right)
 
