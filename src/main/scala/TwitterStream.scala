@@ -8,6 +8,7 @@ object TwitterStream {
   private val consumerSecret = ""
   private val accessToken = ""
   private val accessTokenSecret = ""
+  // Add your own twitter credentials here
 
   private val conf = new ConfigurationBuilder()
     .setOAuthConsumerKey(consumerKey)
