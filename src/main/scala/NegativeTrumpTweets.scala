@@ -7,7 +7,7 @@ import model.Tweet
 
 import scala.concurrent._
 
-object NegativeTrumpTweetsStream {
+object NegativeTrumpTweets {
 
   def main(args: Array[String]) {
 
