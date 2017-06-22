@@ -7,16 +7,16 @@ import model.Tweet
 
 import scala.concurrent._
 
-object NegativeTrumpTweets {
+object BrexitTweets {
 
   def main(args: Array[String]) {
 
     def readTweets(actor: ActorRef) = {
-      TwitterStream.start(tweet => actor ! tweet)("en")("trump")
+      TwitterStream.start(tweet => actor ! tweet)("en")("brexit")
     }
 
     // Akka streams initialisation
-    implicit val system: ActorSystem = ActorSystem("negative-trump-tweets")
+    implicit val system: ActorSystem = ActorSystem("brexit-tweets")
     implicit val materializer: ActorMaterializer = ActorMaterializer()
 
     // Sources
@@ -29,14 +29,14 @@ object NegativeTrumpTweets {
     val printTweet: Sink[Tweet, Future[Done]] = Sink.foreach[Tweet](println _)
 
     // Flows
-    val getNegativeTweets = Fusing.aggressive(
+    val getBrexitTweets = Fusing.aggressive(
       Flow[Tweet]
-        .filter(_.body.toLowerCase.contains("hate"))
+        .filter(_.body.toLowerCase.contains("brexit"))
     )
 
     // Build graph (execution plan)
     val graph: RunnableGraph[Unit] = tweets
-      .via(getNegativeTweets)
+      .via(getBrexitTweets)
       .to(printTweet)
 
     // Run graph

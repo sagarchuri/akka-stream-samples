@@ -3,9 +3,6 @@ import akka._
 import akka.actor.{ActorRef, ActorSystem, _}
 import akka.stream._
 import akka.stream.scaladsl._
-import model.Tweet
-
-import scala.concurrent._
 
 object NumberMagic {
 
@@ -42,6 +39,22 @@ object NumberMagic {
     })
 
     g.run()
+
+  //  Source(1 to 10).via(Flow[Int].map(_*10)).to(Sink.foreach(println(_))).run()
+
+    //basic transformation
+    /*
+     val text =
+      """|Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+         |Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+         |when an unknown printer took a galley of type and scrambled it to make a type
+         |specimen book.""".stripMargin
+
+    Source.fromIterator(() => text.split("\\s").iterator).
+      map(_.toUpperCase).
+      runForeach(println).
+      onComplete(_ => system.shutdown())
+     */
   }
 
 }
